@@ -8,11 +8,11 @@ USER app
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG configuration=Release
 WORKDIR /src
-COPY ["AppointmentSystem/src/AppointmentSystem.Api/AppointmentSystem.Api.csproj", "AppointmentSystem/src/AppointmentSystem.Api/"]
-RUN dotnet restore "AppointmentSystem/src/AppointmentSystem.Api/AppointmentSystem.Api.csproj"
+COPY ["/AppointmentSystem.Api/AppointmentSystem.Api.csproj", "src/AppointmentSystem.Api/"]
+RUN dotnet restore "src/AppointmentSystem.Api/AppointmentSystem.Api.csproj"
 COPY . .
-WORKDIR "/src/AppointmentSystem/src/AppointmentSystem.Api"
-RUN dotnet build "AppointmentSystem.Api.csproj" -c $configuration -o /app/build
+WORKDIR "/AppointmentSystem.Api"
+RUN dotnet build "src/AppointmentSystem.Api/AppointmentSystem.Api.csproj" -c $configuration -o /app/build
 
 FROM build AS publish
 ARG configuration=Release

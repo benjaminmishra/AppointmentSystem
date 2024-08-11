@@ -1,0 +1,38 @@
+version: '3.4'
+
+services:
+  appointmentsystem-api:
+    build:
+      context: .
+      dockerfile: AppointmentSystem.Api/Dockerfile
+    networks:
+      - appointment-system-network
+    ports:
+      - "3000:5049"
+    depends_on:
+      - enpal-coding-challenge-db  
+  
+  appointmentsystem-migrations:
+    build:
+      context: .
+      dockerfile: AppointmentSystem.Migrations/Dockerfile
+    networks:
+      - appointment-system-network
+    depends_on:
+      - appointmentsystem-api
+    restart: on-failure
+      
+  enpal-coding-challenge-db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: coding-challenge
+      POSTGRES_USER: postgress
+      POSTGRES_PASSWORD: mypassword123!
+    ports:
+      - "5432:5432"
+    networks:
+      - appointment-system-network
+        
+networks:
+  appointment-system-network:
+    driver: bridge

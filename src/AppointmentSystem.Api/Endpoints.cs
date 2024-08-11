@@ -13,7 +13,6 @@ public static class Endpoints
         .MapPost("query",QueryHandler)
         .WithName("Query")
         .WithOpenApi();
-
     }
 
     private static ActionResult QueryHandler()

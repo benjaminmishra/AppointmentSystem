@@ -4,8 +4,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6C09AD45-1897-4B2A-8CFF-46DF7B36A351}"
+	ProjectSection(SolutionItems) = preProject
+		src\docker-compose.yml = src\docker-compose.yml
+		src\docker-compose.debug.yml = src\docker-compose.debug.yml
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentSystem.Api", "src\AppointmentSystem.Api\AppointmentSystem.Api.csproj", "{7D903BAA-B04D-4B71-9EDB-995A95DA2EB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentSystem.Migrations", "src\AppointmentSystem.Migrations\AppointmentSystem.Migrations.csproj", "{BFEC0124-DCAB-47BD-99B6-EE057036F695}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,8 +26,13 @@ Global
 		{7D903BAA-B04D-4B71-9EDB-995A95DA2EB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D903BAA-B04D-4B71-9EDB-995A95DA2EB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D903BAA-B04D-4B71-9EDB-995A95DA2EB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFEC0124-DCAB-47BD-99B6-EE057036F695}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFEC0124-DCAB-47BD-99B6-EE057036F695}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFEC0124-DCAB-47BD-99B6-EE057036F695}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFEC0124-DCAB-47BD-99B6-EE057036F695}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7D903BAA-B04D-4B71-9EDB-995A95DA2EB8} = {6C09AD45-1897-4B2A-8CFF-46DF7B36A351}
+		{BFEC0124-DCAB-47BD-99B6-EE057036F695} = {6C09AD45-1897-4B2A-8CFF-46DF7B36A351}
 	EndGlobalSection
 EndGlobal
