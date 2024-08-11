@@ -15,7 +15,12 @@ var upgrader =
         .Build();
 
 if (!upgrader.IsUpgradeRequired())
+{
+    Console.ForegroundColor = ConsoleColor.Green;
+    Console.WriteLine("Database already up-to date!");
+    Console.ResetColor();
     return 0;
+}
 
 var result = upgrader.PerformUpgrade();
 
