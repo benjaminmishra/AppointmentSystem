@@ -1,4 +1,4 @@
-namespace AppointmentSystem.Api;
+namespace AppointmentSystem.Application;
 
 public class AvailableSlot
 {
