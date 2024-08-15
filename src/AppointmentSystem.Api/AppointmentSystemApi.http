@@ -1,0 +1,13 @@
+### POST Request to test the api
+POST http://localhost:3000/calendar/query
+Content-Type: application/json
+
+{
+  "date": "2024-05-12",
+  "products": [
+    "SolarPanels"
+  ],
+  "language": "German",
+  "rating": "Silver"
+}
+###

@@ -1,26 +1,8 @@
-using AppointmentSystem.Api;
+using FastEndpoints;
 
-var builder = WebApplication.CreateBuilder(args);
+var bld = WebApplication.CreateBuilder();
+bld.Services.AddFastEndpoints();
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddAuthentication().AddBearerToken();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-app.UseAuthentication();
-
-app.RegisterEndpoints();
-
-await app.RunAsync();
+var app = bld.Build();
+app.UseFastEndpoints();
+app.Run();
