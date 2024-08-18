@@ -1,3 +1,5 @@
+using AppointmentSystem.Domain;
+
 namespace AppointmentSystem.Api.Endpoints.Calendar;
 
-public record QueryResponse(int AvaiableCount, DateTime StartDate);
+public record QueryResponse(IEnumerable<AvailableSlot> AvailableSlots);

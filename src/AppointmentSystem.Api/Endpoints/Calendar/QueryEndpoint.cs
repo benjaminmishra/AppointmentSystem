@@ -1,31 +1,40 @@
-using Dapper;
+using AppointmentSystem.Application;
+using AppointmentSystem.Domain;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Npgsql;
 
 namespace AppointmentSystem.Api.Endpoints.Calendar;
 
-public class QueryEndpoint : Endpoint<QueryRequest,Results<Ok<AvailableSlot[]>, NotFound, BadRequest>>
+public class QueryEndpoint : Endpoint<QueryRequest,Results<Ok<QueryResponse>, NotFound, BadRequest, ProblemHttpResult>>
 {
-    private static string _connectionString = "Server=enpal-coding-challenge-db;Port=5432;Database=coding-challenge;User Id=postgress;Password=mypassword123!;";
+    private readonly GetAvailableSlotsQueryHandler _getAvailableSlotsQueryHandler;
+    public QueryEndpoint(GetAvailableSlotsQueryHandler getAvailableSlotsQueryHandler)
+    {
+        _getAvailableSlotsQueryHandler = getAvailableSlotsQueryHandler;
+    }
+
     public override void Configure()
     {
         Post("calendar/query");
         AllowAnonymous();
     }
 
-    public override async Task<Results<Ok<AvailableSlot[]>, NotFound, BadRequest>> ExecuteAsync(QueryRequest request, CancellationToken cancellationToken)
+    public override async Task<Results<Ok<QueryResponse>, NotFound, BadRequest, ProblemHttpResult>> ExecuteAsync(QueryRequest request, CancellationToken cancellationToken)
     {
         if (!DateOnly.TryParseExact(request.Date, "yyyy-MM-dd", out var day))
             return TypedResults.BadRequest();
         
-        var result = await GetAvailableSlots([request.Language], request.Products, [request.CustomerRating], cancellationToken);
-
-        var availableSlots = result as AvailableSlot[] ?? result.ToArray();
+        var result = await _getAvailableSlotsQueryHandler.HandleAsync(request.Language, request.Products, request.CustomerRating, cancellationToken);
         
-        if (!availableSlots.Any())
+        if (result.Value is AvaiableSlotsNotFoundError)
             return TypedResults.NotFound();
+
+        if (result.Value is AvaiableSlotsExceptionError error)
+            return TypedResults.Problem(detail: error.Message, statusCode: 500, title: "Unexpected Error");
+
+        if (result.Value is AvailableSlotsRequestValidationError)
+            return TypedResults.BadRequest();
         
-        return TypedResults.Ok(availableSlots);
+        return TypedResults.Ok(new QueryResponse(result.AsT0));
     }
 }

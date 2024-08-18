@@ -6,4 +6,12 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\AppointmentSystem.Infrastructure\AppointmentSystem.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="OneOf" Version="3.0.271" />
+    </ItemGroup>
+
 </Project>

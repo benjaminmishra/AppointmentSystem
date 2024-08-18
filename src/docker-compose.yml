@@ -18,8 +18,6 @@ services:
       dockerfile: AppointmentSystem.Migrations/Dockerfile
     networks:
       - appointment-system-network
-    depends_on:
-      - appointmentsystem-api
     restart: on-failure
       
   enpal-coding-challenge-db:
