@@ -4,6 +4,8 @@ namespace AppointmentSystem.Infrastructure;
 
 public class DatabaseOptions
 {
+    public static string Section = "Database";
+
     [Required]
     public string Host { get; set; }
     [Required]

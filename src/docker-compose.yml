@@ -1,13 +1,11 @@
 version: '3.4'
 
-x-dbserver-details: &dbserver
-  DB_HOST: enpal-coding-challenge-db
-  DB_PORT: 5432
-  
-x-database-details: &database
-  POSTGRES_DB: coding-challenge
-  POSTGRES_USER: postgress
-  POSTGRES_PASSWORD: mypassword123!
+x-database-details: &database-details
+  Database__Host: enpal-coding-challenge-db
+  Database__Port: 5432
+  Database__Name: coding-challenge
+  Database__User: postgress
+  Database__Password: mypassword123!
 
 services:
   appointmentsystem-api:
@@ -15,8 +13,7 @@ services:
       context: .
       dockerfile: AppointmentSystem.Api/Dockerfile
     environment:
-      <<: *dbserver
-      <<: *database
+      <<: [*database-details]
     networks:
       - appointment-system-network
     ports:
@@ -29,8 +26,7 @@ services:
       context: .
       dockerfile: AppointmentSystem.Migrations/Dockerfile
     environment:
-      <<: *dbserver
-      <<: *database
+      <<: [*database-details]
     networks:
       - appointment-system-network
     restart: on-failure
@@ -38,7 +34,8 @@ services:
   enpal-coding-challenge-db:
     image: postgres:16  
     environment:
-      <<: *database
+      POSTGRES__DB: postgress
+      POSTRGRES__PASSWORD: mypassword123!
     ports:
       - "5432:5432"
     networks:

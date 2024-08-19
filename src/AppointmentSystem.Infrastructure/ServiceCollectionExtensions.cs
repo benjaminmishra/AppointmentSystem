@@ -3,12 +3,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AppointmentSystem.Infrastructure;
 
-public static class ServiceCollectionExtentions
+public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
     {
 
-        services.AddOptions<DatabaseOptions>(config.GetSection(DatabaseOptions.Section))
+        services.AddOptions<DatabaseOptions>().Bind(config.GetSection());
 
 
         services.AddScoped<ICalendarQueryRepository, CalendarQueryRepository>();

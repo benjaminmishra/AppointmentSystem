@@ -1,16 +1,16 @@
 using AppointmentSystem.Application.Queries;
-using AppointmentSystem.Domain;
+using AppointmentSystem.Domain.Errors;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace AppointmentSystem.Api.Endpoints.Calendar;
 
-public class QueryEndpoint : Endpoint<QueryRequest,Results<Ok<QueryResponse>, NotFound, BadRequest<string>, ProblemHttpResult>>
+public class QueryEndpoint : Endpoint<QueryRequest, Results<Ok<QueryResponse>, NotFound, BadRequest<string>, ProblemHttpResult>>
 {
     private const string InputDateFormat = "yyyy-MM-dd";
-    
+
     private readonly IGetAvailableSlotsQueryHandler _getAvailableSlotsQueryHandler;
-    
+
     public QueryEndpoint(IGetAvailableSlotsQueryHandler getAvailableSlotsQueryHandler)
     {
         _getAvailableSlotsQueryHandler = getAvailableSlotsQueryHandler;
@@ -22,8 +22,8 @@ public class QueryEndpoint : Endpoint<QueryRequest,Results<Ok<QueryResponse>, No
         AllowAnonymous();
     }
 
-    public override async Task<Results<Ok<QueryResponse>, NotFound, BadRequest<string>, ProblemHttpResult>>ExecuteAsync(
-        QueryRequest request, 
+    public override async Task<Results<Ok<QueryResponse>, NotFound, BadRequest<string>, ProblemHttpResult>> ExecuteAsync(
+        QueryRequest request,
         CancellationToken cancellationToken)
     {
         if (!DateOnly.TryParseExact(request.Date, InputDateFormat, out var day))
@@ -31,24 +31,27 @@ public class QueryEndpoint : Endpoint<QueryRequest,Results<Ok<QueryResponse>, No
 
         var result = await _getAvailableSlotsQueryHandler
             .HandleAsync(
-                request.Language, 
+                request.Language,
                 request.Products,
-            request.CustomerRating, 
-                day, 
+            request.CustomerRating,
+                day,
                 cancellationToken);
 
-        if (result.Value is AvaiableSlotsError error)
+        if (result.Value is AvailableSlotsError error)
         {
-            if (error is AvaiableSlotsNotFoundError)
-                return TypedResults.NotFound();
+            switch (error)
+            {
+                case AvailableSlotsNotFoundError:
+                    return TypedResults.NotFound();
 
-            if (error is AvaiableSlotsExceptionError)
-                return TypedResults.Problem(detail: error.Message, statusCode: 500, title: "Unexpected Error");
+                case AvailableSlotsExceptionError:
+                    return TypedResults.Problem(detail: error.Message, statusCode: 500, title: "Unexpected Error");
 
-            if (error is AvailableSlotsRequestValidationError)
-                return TypedResults.BadRequest(error.Message);
+                case AvailableSlotsRequestValidationError:
+                    return TypedResults.BadRequest(error.Message);
+            }
         }
-        
+
         return TypedResults.Ok(new QueryResponse(result.AsT0));
     }
 }
