@@ -1,19 +1,16 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace AppointmentSystem.Migrations;
 
 public class DatabaseOptions
 {
-    public static string Section = "Database";
+    public const string Section = "Database";
 
-    [Required]
-    public string Host { get; set; }
-    [Required]
-    public string Port { get; set; }
-    [Required]
-    public string Database { get; set; }
-    [Required]
-    public string Username { get; set; }
-    [Required]
-    public string Password { get; set; }
+    public string Host { get; set; } = string.Empty;
+
+    public int Port { get; set; } = 5432;
+
+    public string Name { get; set; } = string.Empty;
+
+    public string User { get; set; } = string.Empty;
+
+    public string Password { get; set; } = string.Empty;
 }

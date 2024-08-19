@@ -15,7 +15,7 @@ public class DbConnectionFactory : IDbConnectionFactory
 
     public IDbConnection CreateConnection()
     {
-        var connStr = $"Server={_databaseOptions.Value.Host};Port={_databaseOptions.Value.Port};Database={_databaseOptions.Value.Database};User Id={_databaseOptions.Value.Username};Password={_databaseOptions.Value.Password};";
+        var connStr = $"Server={_databaseOptions.Value.Host};Port={_databaseOptions.Value.Port};Database={_databaseOptions.Value.Name};User Id={_databaseOptions.Value.User};Password={_databaseOptions.Value.Password};";
         var conn = new NpgsqlConnection(connStr);
         conn.Open();
         return conn;

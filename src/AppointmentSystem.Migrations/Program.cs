@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System.Reflection;
 
+
 // Setup configuration
 var configuration = new ConfigurationBuilder()
     .AddEnvironmentVariables()
@@ -16,6 +17,7 @@ var options = Options.Create(databaseSettings);
 
 var connectionString = args.FirstOrDefault() ?? BuildConnectionString(options);
 
+// Ensure database is created
 EnsureDatabase.For.PostgresqlDatabase(connectionString);
 
 var upgrader =
@@ -25,6 +27,7 @@ var upgrader =
         .LogToConsole()
         .Build();
 
+// apply upgrades if needed
 if (!upgrader.IsUpgradeRequired())
 {
     Console.ForegroundColor = ConsoleColor.Green;
@@ -42,7 +45,7 @@ if (!result.Successful)
     Console.ResetColor();
 #if DEBUG
     Console.ReadLine();
-#endif                
+#endif
     return -1;
 }
 
@@ -51,5 +54,6 @@ Console.WriteLine("Success!");
 Console.ResetColor();
 return 0;
 
-string BuildConnectionString(IOptions<DatabaseOptions> databaseOptions) =>
-    $"Server={databaseOptions.Value.Host};Port={databaseOptions.Value.Port};Database={databaseOptions.Value.Database};User Id={databaseOptions.Value.Username};Password={databaseOptions.Value.Password};";
+
+static string BuildConnectionString(IOptions<DatabaseOptions> databaseOptions) =>
+    $"Server={databaseOptions.Value.Host};Port={databaseOptions.Value.Port};Database={databaseOptions.Value.Name};User Id={databaseOptions.Value.User};Password={databaseOptions.Value.Password};";
