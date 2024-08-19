@@ -3,9 +3,9 @@ using AppointmentSystem.Infrastructure;
 using OneOf;
 using OneOf.Types;
 
-namespace AppointmentSystem.Application;
+namespace AppointmentSystem.Application.Queries;
 
-public class GetAvailableSlotsQueryHandler
+public class GetAvailableSlotsQueryHandler : IGetAvailableSlotsQueryHandler
 {
     private readonly ICalendarQueryRepository _calendarRepository;
     public GetAvailableSlotsQueryHandler(ICalendarQueryRepository calendarRepository)
@@ -13,7 +13,12 @@ public class GetAvailableSlotsQueryHandler
         _calendarRepository = calendarRepository;
     }
 
-    public async Task<OneOf<List<AvailableSlot>,AvaiableSlotsError>> HandleAsync(string language, string[] products, string ratings, CancellationToken cancellationToken)
+    public async Task<OneOf<List<AvailableSlot>,AvaiableSlotsError>> HandleAsync(
+        string language, 
+        string[] products, 
+        string ratings, 
+        DateOnly date, 
+        CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(language))
             return new AvailableSlotsRequestValidationError("Language cannot be empty or whitespace");
@@ -24,9 +29,12 @@ public class GetAvailableSlotsQueryHandler
         if(string.IsNullOrWhiteSpace(ratings))
             return new AvailableSlotsRequestValidationError("Rating cannot be empty or whitespace");
         
+        if(date == DateOnly.MinValue || date == DateOnly.MaxValue)
+            return new AvailableSlotsRequestValidationError("Date is invalid");
+        
         try
         {
-            var result = await _calendarRepository.GetAvaiableSlotsAsync(language, products, ratings, cancellationToken);
+            var result = await _calendarRepository.GetAvaiableSlotsAsync(language, products, ratings, date.ToDateTime(TimeOnly.MinValue) ,cancellationToken);
             var availableSlots = result.ToList();
             
             if (!availableSlots.Any())

@@ -7,7 +7,12 @@ namespace AppointmentSystem.Infrastructure;
 public class CalendarQueryRepository : ICalendarQueryRepository
 {
     private static string _connectionString = "Server=enpal-coding-challenge-db;Port=5432;Database=coding-challenge;User Id=postgress;Password=mypassword123!;";
-    public async Task<IEnumerable<AvailableSlot>> GetAvaiableSlotsAsync(string language, string[] products, string customerRating, CancellationToken cancellationToken)
+    public async Task<IEnumerable<AvailableSlot>> GetAvaiableSlotsAsync(
+        string language, 
+        string[] products, 
+        string customerRating, 
+        DateTime filterDate,
+        CancellationToken cancellationToken)
     {
         using var dbConnection = new NpgsqlConnection(_connectionString);
         
@@ -22,6 +27,7 @@ public class CalendarQueryRepository : ICalendarQueryRepository
                     (Languages && @Langs OR @Langs IS NULL)
                     AND (Products && @Prods OR @Prods IS NULL)
                     AND (CustomerRatings && @Ratings OR @Ratings IS NULL)
+                    AND (DATE(StartDate) = @FilterDate OR @FilterDate IS NULL)  
                   GROUP BY
                     SlotId, StartDate;
                   """;
@@ -30,7 +36,8 @@ public class CalendarQueryRepository : ICalendarQueryRepository
         {
             Langs = language,
             Ratings = customerRating,
-            Prods = products
+            Prods = products,
+            FilterDate = filterDate,
         }, cancellationToken: cancellationToken);
 
         return await dbConnection.QueryAsync<AvailableSlot>(command);
