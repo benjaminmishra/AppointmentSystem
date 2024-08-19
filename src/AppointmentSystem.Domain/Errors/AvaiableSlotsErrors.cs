@@ -1,6 +1,6 @@
-namespace AppointmentSystem.Domain;
+namespace AppointmentSystem.Domain.Errors;
 
-public record AvaiableSlotsError(string Message, Exception? InnerException = default);
-public record AvailableSlotsRequestValidationError(string ValidationErrMsg) : AvaiableSlotsError(ValidationErrMsg);
-public record AvaiableSlotsNotFoundError() : AvaiableSlotsError("No matching slot found");
-public record AvaiableSlotsExceptionError(Exception InnerException) : AvaiableSlotsError(InnerException.Message, InnerException);
+public record AvailableSlotsError(string Message, Exception? InnerException = default);
+public record AvailableSlotsRequestValidationError(string ValidationErrMsg) : AvailableSlotsError(ValidationErrMsg);
+public record AvailableSlotsNotFoundError() : AvailableSlotsError("No matching slot found");
+public record AvailableSlotsExceptionError(Exception InnerException) : AvailableSlotsError(InnerException.Message, InnerException);

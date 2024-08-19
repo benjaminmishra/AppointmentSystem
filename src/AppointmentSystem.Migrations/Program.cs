@@ -1,9 +1,20 @@
-﻿using System.Reflection;
+﻿using AppointmentSystem.Migrations;
 using DbUp;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using System.Reflection;
 
-var connectionString =
-    args.FirstOrDefault()
-    ?? "Server=enpal-coding-challenge-db;Port=5432;Database=coding-challenge;User Id=postgress;Password=mypassword123!;";
+// Setup configuration
+var configuration = new ConfigurationBuilder()
+    .AddEnvironmentVariables()
+    .Build();
+
+var databaseSettings = new DatabaseOptions();
+configuration.GetSection(DatabaseOptions.Section).Bind(databaseSettings);
+
+var options = Options.Create(databaseSettings);
+
+var connectionString = args.FirstOrDefault() ?? BuildConnectionString(options);
 
 EnsureDatabase.For.PostgresqlDatabase(connectionString);
 
@@ -39,3 +50,6 @@ Console.ForegroundColor = ConsoleColor.Green;
 Console.WriteLine("Success!");
 Console.ResetColor();
 return 0;
+
+string BuildConnectionString(IOptions<DatabaseOptions> databaseOptions) =>
+    $"Server={databaseOptions.Value.Host};Port={databaseOptions.Value.Port};Database={databaseOptions.Value.Database};User Id={databaseOptions.Value.Username};Password={databaseOptions.Value.Password};";

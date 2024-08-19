@@ -1,21 +1,26 @@
-using Dapper;
-using Npgsql;
 using AppointmentSystem.Domain;
+using Dapper;
 
-namespace AppointmentSystem.Infrastructure;
+namespace AppointmentSystem.Infrastructure.DataAccess;
 
 public class CalendarQueryRepository : ICalendarQueryRepository
 {
-    private static string _connectionString = "Server=enpal-coding-challenge-db;Port=5432;Database=coding-challenge;User Id=postgress;Password=mypassword123!;";
-    public async Task<IEnumerable<AvailableSlot>> GetAvaiableSlotsAsync(
-        string language, 
-        string[] products, 
-        string customerRating, 
+    private readonly IDbConnectionFactory _dbConnectionFactory;
+
+    public CalendarQueryRepository(IDbConnectionFactory dbConnectionFactory)
+    {
+        _dbConnectionFactory = dbConnectionFactory;
+    }
+
+    public async Task<IEnumerable<AvailableSlot>> GetAvailableSlotsAsync(
+        string language,
+        string[] products,
+        string customerRating,
         DateTime filterDate,
         CancellationToken cancellationToken)
     {
-        using var dbConnection = new NpgsqlConnection(_connectionString);
-        
+        using var dbConnection = _dbConnectionFactory.CreateConnection();
+
         var sql = """
                   SELECT
                       SlotId,
