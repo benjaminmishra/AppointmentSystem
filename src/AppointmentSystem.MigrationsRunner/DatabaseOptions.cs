@@ -1,4 +1,4 @@
-namespace AppointmentSystem.Migrations;
+namespace AppointmentSystem.MigrationRunner;
 
 public class DatabaseOptions
 {

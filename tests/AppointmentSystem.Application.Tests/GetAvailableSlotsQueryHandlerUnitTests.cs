@@ -1,37 +1,34 @@
 using AppointmentSystem.Application.Queries;
-using AppointmentSystem.Domain.Models;
 using AppointmentSystem.Domain.Enums;
 using AppointmentSystem.Domain.Errors;
+using AppointmentSystem.Domain.Models;
 using AppointmentSystem.Infrastructure.DataAccess;
 using Moq;
 
 namespace AppointmentSystem.Application.Tests;
 
 [Trait("Type", "Unit")]
-public class GetAvailableSlotsQueryHandlerTests
+public class GetAvailableSlotsQueryHandlerUnitTests
 {
     private readonly Mock<ICalendarQueryRepository> _calendarRepositoryMock;
     private readonly GetAvailableSlotsQueryHandler _handler;
 
-    public GetAvailableSlotsQueryHandlerTests()
+    public GetAvailableSlotsQueryHandlerUnitTests()
     {
         _calendarRepositoryMock = new Mock<ICalendarQueryRepository>();
         _handler = new GetAvailableSlotsQueryHandler(_calendarRepositoryMock.Object);
     }
 
-    [Theory]
-    [InlineData("unsupportedLanguage")]
-    public async Task HandleAsync_InvalidLanguage_ReturnsValidationError(string language)
+    [Fact]
+    public async Task HandleAsync_InvalidLanguage_ReturnsValidationError()
     {
-        // Arrange
+        var language = "unsupportedLanguage";
         var products = new[] { Product.SolarPanels.ToString() };
         var rating = Rating.Gold.ToString();
         var date = DateOnly.FromDateTime(DateTime.Now);
 
-        // Act
         var result = await _handler.HandleAsync(language, products, rating, date, CancellationToken.None);
 
-        // Assert
         var validationError = Assert.IsType<AvailableSlotsRequestValidationError>(result.Value);
         Assert.Equal($"{language} not supported", validationError.Message);
     }
@@ -53,19 +50,16 @@ public class GetAvailableSlotsQueryHandlerTests
         Assert.Equal("One or more products are not supported", validationError.Message);
     }
 
-    [Theory]
-    [InlineData("InvalidRating")]
-    public async Task HandleAsync_InvalidRating_ReturnsValidationError(string rating)
+    [Fact]
+    public async Task HandleAsync_InvalidRating_ReturnsValidationError()
     {
-        // Arrange
+        var rating = "InvalidRating";
         var language = Language.English.ToString();
         var products = new[] { Product.SolarPanels.ToString() };
         var date = DateOnly.FromDateTime(DateTime.Now);
 
-        // Act
         var result = await _handler.HandleAsync(language, products, rating, date, CancellationToken.None);
 
-        // Assert
         var validationError = Assert.IsType<AvailableSlotsRequestValidationError>(result.Value);
         Assert.Equal($"{rating} not supported", validationError.Message);
     }
@@ -73,7 +67,6 @@ public class GetAvailableSlotsQueryHandlerTests
     [Fact]
     public async Task HandleAsync_NoAvailableSlots_ReturnsNotFoundError()
     {
-        // Arrange
         var language = Language.English.ToString();
         var products = new[] { Product.SolarPanels.ToString() };
         var rating = Rating.Gold.ToString();
@@ -83,17 +76,14 @@ public class GetAvailableSlotsQueryHandlerTests
             .Setup(repo => repo.GetAvailableSlotsAsync(language, products, rating, date.ToDateTime(TimeOnly.MinValue), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Enumerable.Empty<AvailableSlot>());
 
-        // Act
         var result = await _handler.HandleAsync(language, products, rating, date, CancellationToken.None);
 
-        // Assert
         Assert.IsType<AvailableSlotsNotFoundError>(result.Value);
     }
 
     [Fact]
     public async Task HandleAsync_AvailableSlotsFound_ReturnsAvailableSlots()
     {
-        // Arrange
         var language = Language.English.ToString();
         var products = new[] { Product.SolarPanels.ToString() };
         var rating = Rating.Gold.ToString();
@@ -104,10 +94,8 @@ public class GetAvailableSlotsQueryHandlerTests
             .Setup(repo => repo.GetAvailableSlotsAsync(language, products, rating, date.ToDateTime(TimeOnly.MinValue), It.IsAny<CancellationToken>()))
             .ReturnsAsync(slots);
 
-        // Act
         var result = await _handler.HandleAsync(language, products, rating, date, CancellationToken.None);
 
-        // Assert
         var availableSlots = Assert.IsType<List<AvailableSlot>>(result.Value);
         Assert.Single(availableSlots);
     }
@@ -115,7 +103,6 @@ public class GetAvailableSlotsQueryHandlerTests
     [Fact]
     public async Task HandleAsync_RepositoryThrowsException_ReturnsExceptionError()
     {
-        // Arrange
         var language = Language.English.ToString();
         var products = new[] { Product.SolarPanels.ToString() };
         var rating = Rating.Gold.ToString();
@@ -126,10 +113,8 @@ public class GetAvailableSlotsQueryHandlerTests
             .Setup(repo => repo.GetAvailableSlotsAsync(language, products, rating, date.ToDateTime(TimeOnly.MinValue), It.IsAny<CancellationToken>()))
             .ThrowsAsync(exception);
 
-        // Act
         var result = await _handler.HandleAsync(language, products, rating, date, CancellationToken.None);
 
-        // Assert
         var error = Assert.IsType<AvailableSlotsExceptionError>(result.Value);
         Assert.Equal(exception, error.InnerException);
     }

@@ -6,12 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6C09AD45-1897-4B2A-8CFF-46DF7B36A351}"
 	ProjectSection(SolutionItems) = preProject
 		src\docker-compose.yml = src\docker-compose.yml
-		src\docker-compose.debug.yml = src\docker-compose.debug.yml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentSystem.Api", "src\AppointmentSystem.Api\AppointmentSystem.Api.csproj", "{7D903BAA-B04D-4B71-9EDB-995A95DA2EB8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentSystem.Migrations", "src\AppointmentSystem.Migrations\AppointmentSystem.Migrations.csproj", "{BFEC0124-DCAB-47BD-99B6-EE057036F695}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentSystem.Application", "src\AppointmentSystem.Application\AppointmentSystem.Application.csproj", "{012618B1-E836-4B2B-AFFA-EA481577BD36}"
 EndProject
@@ -28,23 +25,22 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentSystem.Applicati
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4B6968C5-AD96-4C8C-91DA-0684C1E8552A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentSystem.Infrastructure.Tests", "tests\AppointmentSystem.Infrastructure.Tests\AppointmentSystem.Infrastructure.Tests.csproj", "{95CA8C3F-47E6-4FA5-9368-1622C3F43E62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentSystem.Migration", "src\AppointmentSystem.Migration\AppointmentSystem.Migration.csproj", "{BD31E1BC-41F9-4FC8-8DFB-44979A51368A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentSystem.MigrationRunner", "src\AppointmentSystem.MigrationsRunner\AppointmentSystem.MigrationRunner.csproj", "{F90874D7-F184-44C9-8225-8146F78282C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{7D903BAA-B04D-4B71-9EDB-995A95DA2EB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7D903BAA-B04D-4B71-9EDB-995A95DA2EB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D903BAA-B04D-4B71-9EDB-995A95DA2EB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D903BAA-B04D-4B71-9EDB-995A95DA2EB8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BFEC0124-DCAB-47BD-99B6-EE057036F695}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BFEC0124-DCAB-47BD-99B6-EE057036F695}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BFEC0124-DCAB-47BD-99B6-EE057036F695}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BFEC0124-DCAB-47BD-99B6-EE057036F695}.Release|Any CPU.Build.0 = Release|Any CPU
 		{012618B1-E836-4B2B-AFFA-EA481577BD36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{012618B1-E836-4B2B-AFFA-EA481577BD36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{012618B1-E836-4B2B-AFFA-EA481577BD36}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -61,13 +57,30 @@ Global
 		{BC840DB4-A72E-4ABB-8473-970557AF2B82}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC840DB4-A72E-4ABB-8473-970557AF2B82}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC840DB4-A72E-4ABB-8473-970557AF2B82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95CA8C3F-47E6-4FA5-9368-1622C3F43E62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95CA8C3F-47E6-4FA5-9368-1622C3F43E62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95CA8C3F-47E6-4FA5-9368-1622C3F43E62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95CA8C3F-47E6-4FA5-9368-1622C3F43E62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD31E1BC-41F9-4FC8-8DFB-44979A51368A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD31E1BC-41F9-4FC8-8DFB-44979A51368A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD31E1BC-41F9-4FC8-8DFB-44979A51368A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD31E1BC-41F9-4FC8-8DFB-44979A51368A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F90874D7-F184-44C9-8225-8146F78282C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F90874D7-F184-44C9-8225-8146F78282C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F90874D7-F184-44C9-8225-8146F78282C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F90874D7-F184-44C9-8225-8146F78282C7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7D903BAA-B04D-4B71-9EDB-995A95DA2EB8} = {6C09AD45-1897-4B2A-8CFF-46DF7B36A351}
-		{BFEC0124-DCAB-47BD-99B6-EE057036F695} = {6C09AD45-1897-4B2A-8CFF-46DF7B36A351}
 		{012618B1-E836-4B2B-AFFA-EA481577BD36} = {6C09AD45-1897-4B2A-8CFF-46DF7B36A351}
 		{5392BF28-199C-4004-ACD5-83B1A9468B9F} = {6C09AD45-1897-4B2A-8CFF-46DF7B36A351}
 		{9EC7A7C9-F862-4A29-8EF5-C586DBDF22C5} = {6C09AD45-1897-4B2A-8CFF-46DF7B36A351}
 		{BC840DB4-A72E-4ABB-8473-970557AF2B82} = {4B6968C5-AD96-4C8C-91DA-0684C1E8552A}
+		{95CA8C3F-47E6-4FA5-9368-1622C3F43E62} = {4B6968C5-AD96-4C8C-91DA-0684C1E8552A}
+		{BD31E1BC-41F9-4FC8-8DFB-44979A51368A} = {6C09AD45-1897-4B2A-8CFF-46DF7B36A351}
+		{F90874D7-F184-44C9-8225-8146F78282C7} = {6C09AD45-1897-4B2A-8CFF-46DF7B36A351}
 	EndGlobalSection
 EndGlobal
