@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System.Reflection;
 
-
 // Setup configuration
 var configuration = new ConfigurationBuilder()
     .AddEnvironmentVariables()
@@ -27,7 +26,7 @@ var upgrader =
         .LogToConsole()
         .Build();
 
-// apply upgrades if needed
+// apply upgrades only if needed
 if (!upgrader.IsUpgradeRequired())
 {
     Console.ForegroundColor = ConsoleColor.Green;

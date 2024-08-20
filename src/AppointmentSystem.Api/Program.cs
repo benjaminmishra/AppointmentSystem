@@ -9,7 +9,7 @@ builder.Services
     .SwaggerDocument();
 
 builder.Services.AddApplication();
-builder.Services.AddInfrastructure(x => builder.Configuration.GetSection(DatabaseOptions.Section));
+builder.Services.AddInfrastructure(options => builder.Configuration.GetSection(DatabaseOptions.Section).Bind(options));
 
 var app = builder.Build();
 app

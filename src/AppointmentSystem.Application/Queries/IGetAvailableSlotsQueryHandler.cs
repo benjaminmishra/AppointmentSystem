@@ -1,4 +1,4 @@
-using AppointmentSystem.Domain;
+using AppointmentSystem.Domain.Models;
 using AppointmentSystem.Domain.Errors;
 using OneOf;
 

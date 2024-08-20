@@ -4,16 +4,11 @@ namespace AppointmentSystem.Infrastructure;
 
 public class DatabaseOptions
 {
-    public static string Section = "Database";
-
-    [Required]
-    public string Host { get; set; }
-    [Required]
-    public string Port { get; set; }
-    [Required]
-    public string Name { get; set; }
-    [Required]
-    public string User { get; set; }
-    [Required]
-    public string Password { get; set; }
+    public const string Section = "Database";
+    
+    public required string Host { get; set; }
+    public required string Port { get; set; }
+    public required string Name { get; set; }
+    public required string User { get; set; }
+    public required string Password { get; set; }
 }

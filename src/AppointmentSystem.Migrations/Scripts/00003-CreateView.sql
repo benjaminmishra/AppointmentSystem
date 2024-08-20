@@ -7,7 +7,10 @@ SELECT
     s.id AS SlotId,
     s.start_date AS StartDate,
     s.end_date AS EndDate,
-    sm.id AS SalesManagerId
+    sm.id AS SalesManagerId,
+    sm.languages AS Languages,
+    sm.products AS Products,
+    sm.customer_ratings AS CustomerRatings
 FROM
     slots s
         LEFT JOIN

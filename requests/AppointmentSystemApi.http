@@ -3,11 +3,10 @@ POST http://localhost:3000/calendar/query
 Content-Type: application/json
 
 {
-  "date": "2024-05-12",
-  "products": [
-    "SolarPanels"
-  ],
-  "language": "German",
-  "rating": "Silver"
+  "date": "2024-05-03", 
+  "products": ["SolarPanels", "Heatpumps"], 
+  "language": "German", 
+  "rating": "Gold"
 }
+
 ###

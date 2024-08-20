@@ -1,6 +1,7 @@
-﻿using AppointmentSystem.Domain;
+﻿using AppointmentSystem.Domain.Models;
+using AppointmentSystem.Domain.Enums;
 using AppointmentSystem.Domain.Errors;
-using AppointmentSystem.Infrastructure;
+using AppointmentSystem.Infrastructure.DataAccess;
 using OneOf;
 
 namespace AppointmentSystem.Application.Queries;
@@ -17,25 +18,22 @@ public class GetAvailableSlotsQueryHandler : IGetAvailableSlotsQueryHandler
     public async Task<OneOf<List<AvailableSlot>, AvailableSlotsError>> HandleAsync(
         string language,
         string[] products,
-        string ratings,
+        string rating,
         DateOnly date,
         CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(language))
-            return new AvailableSlotsRequestValidationError("Language cannot be empty or whitespace");
+        if (!Enum.TryParse<Language>(language, true, out _))
+            return new AvailableSlotsRequestValidationError($"{language} not supported");
 
-        if (!products.Any())
-            return new AvailableSlotsRequestValidationError("At least one product must be specified");
+        if (products.Any(p=>!Enum.TryParse<Product>(p, true, out _)))
+            return new AvailableSlotsRequestValidationError("One or more products are not supported");
 
-        if (string.IsNullOrWhiteSpace(ratings))
-            return new AvailableSlotsRequestValidationError("Rating cannot be empty or whitespace");
-
-        if (date == DateOnly.MinValue || date == DateOnly.MaxValue)
-            return new AvailableSlotsRequestValidationError("Date is invalid");
+        if (!Enum.TryParse<Rating>(rating, true, out _))
+            return new AvailableSlotsRequestValidationError($"{rating} not supported");
 
         try
         {
-            var result = await _calendarRepository.GetAvailableSlotsAsync(language, products, ratings, date.ToDateTime(TimeOnly.MinValue), cancellationToken);
+            var result = await _calendarRepository.GetAvailableSlotsAsync(language, products, rating, date.ToDateTime(TimeOnly.MinValue), cancellationToken);
             var availableSlots = result.ToList();
 
             if (!availableSlots.Any())

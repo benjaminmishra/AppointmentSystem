@@ -1,4 +1,4 @@
-using AppointmentSystem.Domain;
+using AppointmentSystem.Domain.Models;
 
 namespace AppointmentSystem.Api.Endpoints.Calendar;
 

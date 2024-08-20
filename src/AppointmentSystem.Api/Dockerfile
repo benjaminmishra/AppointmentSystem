@@ -3,17 +3,13 @@ WORKDIR /app
 EXPOSE 5049
 
 ENV ASPNETCORE_URLS=http://+:5049
-ENV BUILDKIT_PROGRESS=plain
 
 USER app
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG configuration=Release
 WORKDIR /src
-COPY ["./AppointmentSystem.Api/AppointmentSystem.Api.csproj", "./AppointmentSystem.Api/"]
-RUN dotnet restore "./AppointmentSystem.Api/AppointmentSystem.Api.csproj"
 COPY . .
-RUN echo $(ls)
-WORKDIR /src/AppointmentSystem.Api
+WORKDIR "/src/AppointmentSystem.Api"
 RUN dotnet build "./AppointmentSystem.Api.csproj" -c $configuration -o /app/build
 
 FROM build AS publish

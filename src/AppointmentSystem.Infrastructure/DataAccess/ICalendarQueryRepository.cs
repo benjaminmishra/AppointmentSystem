@@ -1,6 +1,6 @@
-﻿using AppointmentSystem.Domain;
+﻿using AppointmentSystem.Domain.Models;
 
-namespace AppointmentSystem.Infrastructure;
+namespace AppointmentSystem.Infrastructure.DataAccess;
 
 public interface ICalendarQueryRepository
 {

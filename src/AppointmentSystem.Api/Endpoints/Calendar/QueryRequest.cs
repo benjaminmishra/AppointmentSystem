@@ -6,4 +6,4 @@ public record QueryRequest(
     [Required]string Date, 
     [Required]string[] Products, 
     [Required]string Language, 
-    [Required]string CustomerRating);
+    [Required]string Rating);

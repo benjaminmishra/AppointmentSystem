@@ -26,14 +26,26 @@ public class QueryEndpoint : Endpoint<QueryRequest, Results<Ok<QueryResponse>, N
         QueryRequest request,
         CancellationToken cancellationToken)
     {
+        if (string.IsNullOrWhiteSpace(request.Language))
+            return TypedResults.BadRequest("Language cannot be empty or whitespace");
+
+        if (!request.Products.Any())
+            return TypedResults.BadRequest("At least one product must be specified");
+
+        if (string.IsNullOrWhiteSpace(request.Rating))
+            return TypedResults.BadRequest("Rating cannot be empty or whitespace");
+        
         if (!DateOnly.TryParseExact(request.Date, InputDateFormat, out var day))
             return TypedResults.BadRequest($"Date can only be entered in {InputDateFormat}");
+        
+        if (day == DateOnly.MinValue || day == DateOnly.MaxValue)
+            return TypedResults.BadRequest("Date is invalid");
 
         var result = await _getAvailableSlotsQueryHandler
             .HandleAsync(
                 request.Language,
                 request.Products,
-            request.CustomerRating,
+            request.Rating,
                 day,
                 cancellationToken);
 
