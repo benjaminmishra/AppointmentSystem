@@ -34,12 +34,7 @@ public class GetAvailableSlotsQueryHandler : IGetAvailableSlotsQueryHandler
         try
         {
             var result = await _calendarRepository.GetAvailableSlotsAsync(language, products, rating, date.ToDateTime(TimeOnly.MinValue), cancellationToken);
-            var availableSlots = result.ToList();
-
-            if (!availableSlots.Any())
-                return new AvailableSlotsNotFoundError();
-
-            return availableSlots;
+            return result.ToList();
         }
         catch (Exception ex)
         {

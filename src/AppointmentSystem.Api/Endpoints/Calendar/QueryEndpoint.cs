@@ -1,11 +1,12 @@
 using AppointmentSystem.Application.Queries;
 using AppointmentSystem.Domain.Errors;
+using AppointmentSystem.Domain.Models;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace AppointmentSystem.Api.Endpoints.Calendar;
 
-public class QueryEndpoint : Endpoint<QueryRequest, Results<Ok<QueryResponse>, NotFound, BadRequest<string>, ProblemHttpResult>>
+public class QueryEndpoint : Endpoint<QueryRequest, Results<Ok<List<AvailableSlot>>, NotFound, BadRequest<string>, ProblemHttpResult>>
 {
     private const string InputDateFormat = "yyyy-MM-dd";
 
@@ -22,7 +23,7 @@ public class QueryEndpoint : Endpoint<QueryRequest, Results<Ok<QueryResponse>, N
         AllowAnonymous();
     }
 
-    public override async Task<Results<Ok<QueryResponse>, NotFound, BadRequest<string>, ProblemHttpResult>> ExecuteAsync(
+    public override async Task<Results<Ok<List<AvailableSlot>>, NotFound, BadRequest<string>, ProblemHttpResult>> ExecuteAsync(
         QueryRequest request,
         CancellationToken cancellationToken)
     {
@@ -53,9 +54,6 @@ public class QueryEndpoint : Endpoint<QueryRequest, Results<Ok<QueryResponse>, N
         {
             switch (error)
             {
-                case AvailableSlotsNotFoundError:
-                    return TypedResults.NotFound();
-
                 case AvailableSlotsExceptionError:
                     return TypedResults.Problem(detail: error.Message, statusCode: 500, title: "Unexpected Error");
 
@@ -64,6 +62,6 @@ public class QueryEndpoint : Endpoint<QueryRequest, Results<Ok<QueryResponse>, N
             }
         }
 
-        return TypedResults.Ok(new QueryResponse(result.AsT0));
+        return TypedResults.Ok(result.AsT0);
     }
 }

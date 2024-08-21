@@ -78,7 +78,7 @@ public class GetAvailableSlotsQueryHandlerUnitTests
 
         var result = await _handler.HandleAsync(language, products, rating, date, CancellationToken.None);
 
-        Assert.IsType<AvailableSlotsNotFoundError>(result.Value);
+        Assert.Empty(result.AsT0);
     }
 
     [Fact]

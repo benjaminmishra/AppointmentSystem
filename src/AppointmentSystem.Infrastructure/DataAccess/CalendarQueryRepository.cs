@@ -30,7 +30,7 @@ public class CalendarQueryRepository : ICalendarQueryRepository
                                           WHERE
                                               @Lang = ANY(Languages)
                                               AND @Rating = ANY(CustomerRatings)
-                                              AND Products && @Prods::varchar[]
+                                              AND Products @> @Prods::varchar[]
                                               AND (DATE(StartDate) = DATE(@FilterDate))
                                           GROUP BY
                                               StartDate;

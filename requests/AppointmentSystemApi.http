@@ -1,12 +1,104 @@
-### POST Request to test the api
+### Monday 2024-05-03, Solar Panels and Heatpumps, German and Gold customer
 POST http://localhost:3000/calendar/query
 Content-Type: application/json
 
 {
-  "date": "2024-05-03", 
-  "products": ["SolarPanels", "Heatpumps"], 
-  "language": "German", 
+  "date": "2024-05-03",
+  "products": ["SolarPanels", "Heatpumps"],
+  "language": "German",
   "rating": "Gold"
 }
 
-###
+### Expected Result
+# [
+#   { "start_date": "2024-05-03T10:30:00.000Z", "available_count": 1 },
+#   { "start_date": "2024-05-03T11:00:00.000Z", "available_count": 1 },
+#   { "start_date": "2024-05-03T11:30:00.000Z", "available_count": 1 }
+# ]
+
+
+### Monday 2024-05-03, Heatpumps, English and Silver customer
+POST http://localhost:3000/calendar/query
+Content-Type: application/json
+
+{
+  "date": "2024-05-03",
+  "products": ["Heatpumps"],
+  "language": "English",
+  "rating": "Silver"
+}
+
+### Expected Result
+# [
+#   { "start_date": "2024-05-03T10:30:00.000Z", "available_count": 1 },
+#   { "start_date": "2024-05-03T11:00:00.000Z", "available_count": 1 },
+#   { "start_date": "2024-05-03T11:30:00.000Z", "available_count": 2 }
+# ]
+
+
+### Monday 2024-05-03, SolarPanels, German and Bronze customer
+POST http://localhost:3000/calendar/query
+Content-Type: application/json
+
+{
+  "date": "2024-05-03",
+  "products": ["SolarPanels"],
+  "language": "German",
+  "rating": "Bronze"
+}
+
+### Expected Result
+# [
+#   { "start_date": "2024-05-03T10:30:00.000Z", "available_count": 1 },
+#   { "start_date": "2024-05-03T11:00:00.000Z", "available_count": 1 },
+#   { "start_date": "2024-05-03T11:30:00.000Z", "available_count": 1 }
+# ]
+
+
+### Tuesday 2024-05-04, Solar Panels and Heatpumps, German and Gold customer
+POST http://localhost:3000/calendar/query
+Content-Type: application/json
+
+{
+  "date": "2024-05-04",
+  "products": ["SolarPanels", "Heatpumps"],
+  "language": "German",
+  "rating": "Gold"
+}
+
+### Expected Result
+# []
+
+
+### Tuesday 2024-05-04, Heatpumps, English and Silver customer
+POST http://localhost:3000/calendar/query
+Content-Type: application/json
+
+{
+  "date": "2024-05-04",
+  "products": ["Heatpumps"],
+  "language": "English",
+  "rating": "Silver"
+}
+
+### Expected Result
+# [
+#   { "start_date": "2024-05-04T11:30:00.000Z", "available_count": 1 }
+# ]
+
+
+### Monday 2024-05-04, SolarPanels, German and Bronze customer
+POST http://localhost:3000/calendar/query
+Content-Type: application/json
+
+{
+  "date": "2024-05-04",
+  "products": ["SolarPanels"],
+  "language": "German",
+  "rating": "Bronze"
+}
+
+### Expected Result
+# [
+#   { "start_date": "2024-05-04T10:30:00.000Z", "available_count": 1 }
+# ]

@@ -70,11 +70,13 @@ public class QueryEndpointUnitTests
         
         _mockQueryHandler
             .Setup(x => x.HandleAsync(request.Language, request.Products, request.Rating, It.IsAny<DateOnly>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new AvailableSlotsNotFoundError());
+            .ReturnsAsync(new List<AvailableSlot>{ });
 
         var result = await _endpoint.ExecuteAsync(request, CancellationToken.None);
         
-        Assert.IsType<NotFound>(result.Result);
+        var okResult = Assert.IsType<Ok<List<AvailableSlot>>>(result.Result);
+        Assert.NotNull(okResult.Value);
+        Assert.Empty(okResult.Value);
     }
 
     [Fact]
@@ -122,8 +124,8 @@ public class QueryEndpointUnitTests
 
         var result = await _endpoint.ExecuteAsync(request, CancellationToken.None);
         
-        var okResult = Assert.IsType<Ok<QueryResponse>>(result.Result);
+        var okResult = Assert.IsType<Ok<List<AvailableSlot>>>(result.Result);
         Assert.NotNull(okResult.Value);
-        Assert.Equal(slots, okResult.Value.AvailableSlots);
+        Assert.Equal(slots, okResult.Value);
     }
 }
