@@ -16,12 +16,19 @@ Steps to run the application
 
 - Open terminal and change directory into the [root folder](.)
 - Run one of the following commands depending on what mode you want to run the app in.
-`docker compose -f src/docker-compose.yml up`
-
-`docker compose -f src/docker-compose.debug.yml up`
+  
+```cmd 
+docker compose -f src/docker-compose.yml up
+```
+or 
+```cmd
+docker compose -f src/docker-compose.debug.yml up
+```
 - Open your browser and navigate to the following link to open the swagger doc.
   `http://localhost:3000/swagger`
 
+
+> Note that we need to have docker running before running these commands. Other than that no addtional steps necessery. The docker compose contains all the necessery services to run the app , the database and to populate the database.
 
 ## Tests
 All tests can be found in the tests folder and are grouped under one test project called [AppointmentSystems.Tests.csproj](./tests/AppointmentSystem.Tests/AppointmentSystem.Tests.csproj). You don't need to have the docker compose up and running to run the tests. Tests (integration tests) manage their own container creation using a package called [TestContainers](https://testcontainers.com/).
@@ -34,7 +41,7 @@ There are two types of tests.
 - Integration Tests - These tests check the logic of fetching data the database. To run them you need docker up and running. And use can use the following command in the project [root directory](./)
   ` dotnet test AppointmentSystem.sln --filter "Type=Integration"`
 
-    Note : Tests use the same migration scripts as the application database to create and pouplate the data and all other necessery resources in the database. More on that below.
+> Note : Tests use the same migration scripts as the application database to create and pouplate the data and all other necessery resources in the database. More on that below.
 
 
 ## Migrations Projects
