@@ -36,16 +36,13 @@ public class GetAvailableSlotsQueryHandlerUnitTests
     [Fact]
     public async Task HandleAsync_InvalidProduct_ReturnsValidationError()
     {
-        // Arrange
         var language = Language.English.ToString();
         var products = new[] { Product.SolarPanels.ToString(), "InvalidProduct" };
         var rating = Rating.Gold.ToString();
         var date = DateOnly.FromDateTime(DateTime.Now);
 
-        // Act
         var result = await _handler.HandleAsync(language, products, rating, date, CancellationToken.None);
 
-        // Assert
         var validationError = Assert.IsType<AvailableSlotsRequestValidationError>(result.Value);
         Assert.Equal("One or more products are not supported", validationError.Message);
     }

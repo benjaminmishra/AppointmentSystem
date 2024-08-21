@@ -1,4 +1,3 @@
-using System.Globalization;
 using AppointmentSystem.Application.Queries;
 using AppointmentSystem.Domain.Errors;
 using AppointmentSystem.Domain.Models;
@@ -22,8 +21,9 @@ public class QueryEndpoint : Endpoint<QueryRequest, Results<Ok<List<AvailableSlo
     {
         Post("calendar/query");
         AllowAnonymous();
-        Summary(s=>{
-            s.Summary = "Returns all the avaiable slots based on the filter criteries passed in the post body";
+        Summary(s =>
+        {
+            s.Summary = "Returns all the available slots based on the filter criteria passed in the post body";
         });
     }
 
@@ -54,17 +54,14 @@ public class QueryEndpoint : Endpoint<QueryRequest, Results<Ok<List<AvailableSlo
                 day,
                 ct);
 
-        if (result.Value is AvailableSlotsError error)
-        {
-            switch (error)
-            {
-                case AvailableSlotsExceptionError:
-                    return TypedResults.Problem(detail: error.Message, statusCode: 500, title: "Unexpected Error");
+        if (result.Value is AvailableSlotsExceptionError exceptionError)
+            return TypedResults.Problem(detail: exceptionError.Message, statusCode: 500, title: "Unexpected Error");
 
-                case AvailableSlotsRequestValidationError:
-                    return TypedResults.BadRequest(error.Message);
-            }
-        }
+        if (result.Value is AvailableSlotsRequestValidationError validationError)
+            return TypedResults.BadRequest(validationError.Message);
+
+        if (result.Value is AvailableSlotsError error)
+            return TypedResults.Problem(error.Message);
 
         return TypedResults.Ok(result.AsT0);
     }

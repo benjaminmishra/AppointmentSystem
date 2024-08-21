@@ -1,6 +1,6 @@
-﻿using AppointmentSystem.Domain.Models;
-using AppointmentSystem.Domain.Enums;
+﻿using AppointmentSystem.Domain.Enums;
 using AppointmentSystem.Domain.Errors;
+using AppointmentSystem.Domain.Models;
 using AppointmentSystem.Infrastructure.DataAccess;
 using OneOf;
 
@@ -25,7 +25,7 @@ public class GetAvailableSlotsQueryHandler : IGetAvailableSlotsQueryHandler
         if (!Enum.TryParse<Language>(language, true, out _))
             return new AvailableSlotsRequestValidationError($"{language} not supported");
 
-        if (products.Any(p=>!Enum.TryParse<Product>(p, true, out _)))
+        if (products.Any(p => !Enum.TryParse<Product>(p, true, out _)))
             return new AvailableSlotsRequestValidationError("One or more products are not supported");
 
         if (!Enum.TryParse<Rating>(rating, true, out _))

@@ -11,9 +11,9 @@ public class DatabaseFixture : IAsyncLifetime
     private const string UserName = "postgres";
     private const string Password = "password";
     private const int Port = 5432;
-    
+
     private readonly PostgreSqlContainer _postgreSqlContainer;
-    
+
     public IDbConnectionFactory? DbConnectionFactory { get; set; }
 
     public DatabaseFixture()
@@ -37,9 +37,9 @@ public class DatabaseFixture : IAsyncLifetime
             Name = DatabaseName,
             User = UserName,
             Password = Password,
-            Port = Port.ToString()
+            Port = Port
         };
-        
+
         DbConnectionFactory = new DbConnectionFactory(Options.Create(databaseOptions));
 
         // Run migrations

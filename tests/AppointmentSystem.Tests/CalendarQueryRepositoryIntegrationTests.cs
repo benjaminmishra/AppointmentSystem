@@ -9,8 +9,8 @@ public class CalendarQueryRepositoryIntegrationTests : IClassFixture<DatabaseFix
 
     public CalendarQueryRepositoryIntegrationTests(DatabaseFixture fixture)
     {
-        if(fixture.DbConnectionFactory is null)
-            throw new InvalidOperationException("DbConnectionFactory is null, failed to initalize test");
+        if (fixture.DbConnectionFactory is null)
+            throw new InvalidOperationException("DbConnectionFactory is null, failed to initialize test");
 
         _repository = new CalendarQueryRepository(fixture.DbConnectionFactory);
     }
