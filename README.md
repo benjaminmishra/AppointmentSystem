@@ -1,4 +1,4 @@
-The goal of this document is to highlight some features of this solution.
+The goal of this document is to highlight some features of this solution. If you are intrested only in how to run this project then in short we just need to find the docker-compose.yml file and run docker compose up command in the same directory as the file. For a more step by step expalning go to the 'How to run the project?' section.
 
 ## Pre-requisites
 - .NET 8
@@ -6,7 +6,7 @@ The goal of this document is to highlight some features of this solution.
 - IDE such as VsCode, Visual Studio, Rider 
 
 
-## How to run it?
+## How to run the project?
 The only way to run it at the moment it through docker compose. There are couple of docker compose files included in the src folder.
 
 - [docker-compose.yml](./src/docker-compose.yml) - This file is for running the app and its supporting services in Release mode. 
