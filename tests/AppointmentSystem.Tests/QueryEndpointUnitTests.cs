@@ -5,7 +5,7 @@ using AppointmentSystem.Domain.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Moq;
 
-namespace AppointmentSystem.Api.Tests;
+namespace AppointmentSystem.Tests;
 
 [Trait("Type","Unit")]
 public class QueryEndpointUnitTests

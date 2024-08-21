@@ -1,8 +1,9 @@
+using AppointmentSystem.Infrastructure;
 using AppointmentSystem.Migrations;
 using Microsoft.Extensions.Options;
 using Testcontainers.PostgreSql;
 
-namespace AppointmentSystem.Infrastructure.Tests;
+namespace AppointmentSystem.Tests;
 
 public class DatabaseFixture : IAsyncLifetime
 {

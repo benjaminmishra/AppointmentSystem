@@ -5,7 +5,7 @@ using AppointmentSystem.Domain.Models;
 using AppointmentSystem.Infrastructure.DataAccess;
 using Moq;
 
-namespace AppointmentSystem.Application.Tests;
+namespace AppointmentSystem.Tests;
 
 [Trait("Type", "Unit")]
 public class GetAvailableSlotsQueryHandlerUnitTests

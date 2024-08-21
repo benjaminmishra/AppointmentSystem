@@ -1,6 +1,6 @@
 using AppointmentSystem.Infrastructure.DataAccess;
 
-namespace AppointmentSystem.Infrastructure.Tests;
+namespace AppointmentSystem.Tests;
 
 [Trait("Type", "Integration")]
 public class CalendarQueryRepositoryTests : IClassFixture<DatabaseFixture>
