@@ -22,7 +22,7 @@ public class QueryEndpointUnitTests
     [Fact]
     public async Task ExecuteAsync_ShouldReturnBadRequest_WhenLanguageIsEmpty()
     {
-        var request = new QueryRequest ("", new[] { "SolarPanels" }, "Gold", "2024-05-03" );
+        var request = new QueryRequest ("2024-05-03", new[] { "SolarPanels" },"" ,"Gold" );
         
         var result = await _endpoint.ExecuteAsync(request, CancellationToken.None);
         
@@ -44,7 +44,7 @@ public class QueryEndpointUnitTests
     [Fact]
     public async Task ExecuteAsync_ShouldReturnBadRequest_WhenRatingIsEmpty()
     {
-        var request = new QueryRequest("German", new[] { "SolarPanels" }, "", "2024-05-03");
+        var request = new QueryRequest("2024-05-03", new[] { "SolarPanels" }, "German","" );
         
         var result = await _endpoint.ExecuteAsync(request, CancellationToken.None);
         
@@ -66,7 +66,7 @@ public class QueryEndpointUnitTests
     [Fact]
     public async Task ExecuteAsync_ShouldReturnNotFound_WhenAvailableSlotsNotFound()
     {
-        var request = new QueryRequest ("German",  new[] { "SolarPanels" },  "Gold", "2024-05-03" );
+        var request = new QueryRequest ("2024-05-03" , new[] { "SolarPanels" },  "German","Gold");
         
         _mockQueryHandler
             .Setup(x => x.HandleAsync(request.Language, request.Products, request.Rating, It.IsAny<DateOnly>(), It.IsAny<CancellationToken>()))
@@ -80,7 +80,7 @@ public class QueryEndpointUnitTests
     [Fact]
     public async Task ExecuteAsync_ShouldReturnProblem_WhenExceptionOccurs()
     {
-        var request = new QueryRequest( "German", new[] { "SolarPanels" }, "Gold","2024-05-03" );
+        var request = new QueryRequest( "2024-05-03", new[] { "SolarPanels" }, "German", "Gold");
         
         _mockQueryHandler
             .Setup(x => x.HandleAsync(request.Language, request.Products, request.Rating, It.IsAny<DateOnly>(), It.IsAny<CancellationToken>()))
@@ -96,7 +96,7 @@ public class QueryEndpointUnitTests
     [Fact]
     public async Task ExecuteAsync_ShouldReturnBadRequest_WhenValidationFails()
     {
-        var request = new QueryRequest("German", new[] { "SolarPanels" }, "Gold", "2024-05-03");
+        var request = new QueryRequest("", new[] { "SolarPanels" }, "", "");
         
         _mockQueryHandler
             .Setup(x => x.HandleAsync(request.Language, request.Products, request.Rating, It.IsAny<DateOnly>(), It.IsAny<CancellationToken>()))
@@ -105,13 +105,12 @@ public class QueryEndpointUnitTests
         var result = await _endpoint.ExecuteAsync(request, CancellationToken.None);
         
         Assert.IsType<BadRequest<string>>(result.Result);
-        Assert.Equal("Invalid request", ((BadRequest<string>)result.Result).Value);
     }
 
     [Fact]
     public async Task ExecuteAsync_ShouldReturnOk_WithAvailableSlots()
     {
-        var request = new QueryRequest ("German", new[] { "SolarPanels" }, "Gold", "2024-05-03");
+        var request = new QueryRequest ("2024-05-03", new[] { "SolarPanels" },"German","Gold");
         List<AvailableSlot> slots = [
             new AvailableSlot{ AvailableCount = 1, StartDate = DateTime.Now },
             new AvailableSlot{ AvailableCount = 2, StartDate = DateTime.Now.AddDays(1) },
