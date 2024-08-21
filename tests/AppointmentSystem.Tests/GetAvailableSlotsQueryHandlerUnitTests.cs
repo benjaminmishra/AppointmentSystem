@@ -27,7 +27,7 @@ public class GetAvailableSlotsQueryHandlerUnitTests
         var rating = Rating.Gold.ToString();
         var date = DateOnly.FromDateTime(DateTime.Now);
 
-        var result = await _handler.HandleAsync(language, products, rating, date, CancellationToken.None);
+        var result = await _handler.HandleAsync(language, products, rating, date, TestHelpers.CreateCancellationToken());
 
         var validationError = Assert.IsType<AvailableSlotsRequestValidationError>(result.Value);
         Assert.Equal($"{language} not supported", validationError.Message);
@@ -41,7 +41,7 @@ public class GetAvailableSlotsQueryHandlerUnitTests
         var rating = Rating.Gold.ToString();
         var date = DateOnly.FromDateTime(DateTime.Now);
 
-        var result = await _handler.HandleAsync(language, products, rating, date, CancellationToken.None);
+        var result = await _handler.HandleAsync(language, products, rating, date, TestHelpers.CreateCancellationToken());
 
         var validationError = Assert.IsType<AvailableSlotsRequestValidationError>(result.Value);
         Assert.Equal("One or more products are not supported", validationError.Message);
@@ -55,7 +55,7 @@ public class GetAvailableSlotsQueryHandlerUnitTests
         var products = new[] { Product.SolarPanels.ToString() };
         var date = DateOnly.FromDateTime(DateTime.Now);
 
-        var result = await _handler.HandleAsync(language, products, rating, date, CancellationToken.None);
+        var result = await _handler.HandleAsync(language, products, rating, date, TestHelpers.CreateCancellationToken());
 
         var validationError = Assert.IsType<AvailableSlotsRequestValidationError>(result.Value);
         Assert.Equal($"{rating} not supported", validationError.Message);
@@ -73,7 +73,7 @@ public class GetAvailableSlotsQueryHandlerUnitTests
             .Setup(repo => repo.GetAvailableSlotsAsync(language, products, rating, date.ToDateTime(TimeOnly.MinValue), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Enumerable.Empty<AvailableSlot>());
 
-        var result = await _handler.HandleAsync(language, products, rating, date, CancellationToken.None);
+        var result = await _handler.HandleAsync(language, products, rating, date, TestHelpers.CreateCancellationToken());
 
         Assert.Empty(result.AsT0);
     }
@@ -91,7 +91,7 @@ public class GetAvailableSlotsQueryHandlerUnitTests
             .Setup(repo => repo.GetAvailableSlotsAsync(language, products, rating, date.ToDateTime(TimeOnly.MinValue), It.IsAny<CancellationToken>()))
             .ReturnsAsync(slots);
 
-        var result = await _handler.HandleAsync(language, products, rating, date, CancellationToken.None);
+        var result = await _handler.HandleAsync(language, products, rating, date, TestHelpers.CreateCancellationToken());
 
         var availableSlots = Assert.IsType<List<AvailableSlot>>(result.Value);
         Assert.Single(availableSlots);
@@ -110,7 +110,7 @@ public class GetAvailableSlotsQueryHandlerUnitTests
             .Setup(repo => repo.GetAvailableSlotsAsync(language, products, rating, date.ToDateTime(TimeOnly.MinValue), It.IsAny<CancellationToken>()))
             .ThrowsAsync(exception);
 
-        var result = await _handler.HandleAsync(language, products, rating, date, CancellationToken.None);
+        var result = await _handler.HandleAsync(language, products, rating, date, TestHelpers.CreateCancellationToken());
 
         var error = Assert.IsType<AvailableSlotsExceptionError>(result.Value);
         Assert.Equal(exception, error.InnerException);

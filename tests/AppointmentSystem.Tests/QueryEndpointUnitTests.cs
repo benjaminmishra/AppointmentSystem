@@ -24,7 +24,7 @@ public class QueryEndpointUnitTests
     {
         var request = new QueryRequest ("2024-05-03", new[] { "SolarPanels" },"" ,"Gold" );
         
-        var result = await _endpoint.ExecuteAsync(request, CancellationToken.None);
+        var result = await _endpoint.ExecuteAsync(request, TestHelpers.CreateCancellationToken());
         
         Assert.IsType<BadRequest<string>>(result.Result);
         Assert.Equal("Language cannot be empty or whitespace", ((BadRequest<string>)result.Result).Value);
@@ -35,7 +35,7 @@ public class QueryEndpointUnitTests
     {
         var request = new QueryRequest ( "German",  Array.Empty<string>(), "Gold",  "2024-05-03" );
         
-        var result = await _endpoint.ExecuteAsync(request, CancellationToken.None);
+        var result = await _endpoint.ExecuteAsync(request, TestHelpers.CreateCancellationToken());
         
         Assert.IsType<BadRequest<string>>(result.Result);
         Assert.Equal("At least one product must be specified", ((BadRequest<string>)result.Result).Value);
@@ -46,7 +46,7 @@ public class QueryEndpointUnitTests
     {
         var request = new QueryRequest("2024-05-03", new[] { "SolarPanels" }, "German","" );
         
-        var result = await _endpoint.ExecuteAsync(request, CancellationToken.None);
+        var result = await _endpoint.ExecuteAsync(request, TestHelpers.CreateCancellationToken());
         
         Assert.IsType<BadRequest<string>>(result.Result);
         Assert.Equal("Rating cannot be empty or whitespace", ((BadRequest<string>)result.Result).Value);
@@ -57,7 +57,7 @@ public class QueryEndpointUnitTests
     {
         var request = new QueryRequest("German", new[] { "SolarPanels" }, "Gold", "invalid-date" );
         
-        var result = await _endpoint.ExecuteAsync(request, CancellationToken.None);
+        var result = await _endpoint.ExecuteAsync(request, TestHelpers.CreateCancellationToken());
         
         Assert.IsType<BadRequest<string>>(result.Result);
         Assert.Equal("Date can only be entered in yyyy-MM-dd", ((BadRequest<string>)result.Result).Value);
@@ -72,7 +72,7 @@ public class QueryEndpointUnitTests
             .Setup(x => x.HandleAsync(request.Language, request.Products, request.Rating, It.IsAny<DateOnly>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<AvailableSlot>{ });
 
-        var result = await _endpoint.ExecuteAsync(request, CancellationToken.None);
+        var result = await _endpoint.ExecuteAsync(request, TestHelpers.CreateCancellationToken());
         
         var okResult = Assert.IsType<Ok<List<AvailableSlot>>>(result.Result);
         Assert.NotNull(okResult.Value);
@@ -88,7 +88,7 @@ public class QueryEndpointUnitTests
             .Setup(x => x.HandleAsync(request.Language, request.Products, request.Rating, It.IsAny<DateOnly>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new AvailableSlotsExceptionError(new Exception("Unexpected Error")));
 
-        var result = await _endpoint.ExecuteAsync(request, CancellationToken.None);
+        var result = await _endpoint.ExecuteAsync(request, TestHelpers.CreateCancellationToken());
         
         var problemResult = Assert.IsType<ProblemHttpResult>(result.Result);
         Assert.Equal(500, problemResult.StatusCode);
@@ -104,7 +104,7 @@ public class QueryEndpointUnitTests
             .Setup(x => x.HandleAsync(request.Language, request.Products, request.Rating, It.IsAny<DateOnly>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new AvailableSlotsRequestValidationError("Invalid request"));
 
-        var result = await _endpoint.ExecuteAsync(request, CancellationToken.None);
+        var result = await _endpoint.ExecuteAsync(request, TestHelpers.CreateCancellationToken());
         
         Assert.IsType<BadRequest<string>>(result.Result);
     }
@@ -122,7 +122,7 @@ public class QueryEndpointUnitTests
             .Setup(x => x.HandleAsync(request.Language, request.Products, request.Rating, It.IsAny<DateOnly>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(slots);
 
-        var result = await _endpoint.ExecuteAsync(request, CancellationToken.None);
+        var result = await _endpoint.ExecuteAsync(request, TestHelpers.CreateCancellationToken());
         
         var okResult = Assert.IsType<Ok<List<AvailableSlot>>>(result.Result);
         Assert.NotNull(okResult.Value);

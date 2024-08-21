@@ -23,7 +23,7 @@ public class CalendarQueryRepositoryIntegrationTests : IClassFixture<DatabaseFix
         var customerRating = "Gold";
         var filterDate = new DateTime(2024, 05, 03);
 
-        var result = await _repository.GetAvailableSlotsAsync(language, products, customerRating, filterDate, CancellationToken.None);
+        var result = await _repository.GetAvailableSlotsAsync(language, products, customerRating, filterDate, TestHelpers.CreateCancellationToken());
 
         var availableSlots = result.ToList();
         Assert.Equal(3, availableSlots.Count);
@@ -40,7 +40,7 @@ public class CalendarQueryRepositoryIntegrationTests : IClassFixture<DatabaseFix
         var customerRating = "Silver";
         var filterDate = new DateTime(2024, 05, 03);
 
-        var result = await _repository.GetAvailableSlotsAsync(language, products, customerRating, filterDate, CancellationToken.None);
+        var result = await _repository.GetAvailableSlotsAsync(language, products, customerRating, filterDate, TestHelpers.CreateCancellationToken());
 
         var availableSlots = result.ToList();
         Assert.Equal(3, availableSlots.Count);
@@ -57,7 +57,7 @@ public class CalendarQueryRepositoryIntegrationTests : IClassFixture<DatabaseFix
         var customerRating = "Bronze";
         var filterDate = new DateTime(2024, 05, 03);
 
-        var result = await _repository.GetAvailableSlotsAsync(language, products, customerRating, filterDate, CancellationToken.None);
+        var result = await _repository.GetAvailableSlotsAsync(language, products, customerRating, filterDate, TestHelpers.CreateCancellationToken());
 
         var availableSlots = result.ToList();
         Assert.Equal(3, availableSlots.Count);
@@ -74,7 +74,7 @@ public class CalendarQueryRepositoryIntegrationTests : IClassFixture<DatabaseFix
         var customerRating = "Gold";
         var filterDate = new DateTime(2024, 05, 04);
 
-        var result = await _repository.GetAvailableSlotsAsync(language, products, customerRating, filterDate, CancellationToken.None);
+        var result = await _repository.GetAvailableSlotsAsync(language, products, customerRating, filterDate, TestHelpers.CreateCancellationToken());
 
         Assert.Empty(result);
     }
@@ -87,7 +87,7 @@ public class CalendarQueryRepositoryIntegrationTests : IClassFixture<DatabaseFix
         var customerRating = "Silver";
         var filterDate = new DateTime(2024, 05, 04);
 
-        var result = await _repository.GetAvailableSlotsAsync(language, products, customerRating, filterDate, CancellationToken.None);
+        var result = await _repository.GetAvailableSlotsAsync(language, products, customerRating, filterDate, TestHelpers.CreateCancellationToken());
 
         var availableSlots = result.ToList();
         Assert.Single(availableSlots);
@@ -102,10 +102,23 @@ public class CalendarQueryRepositoryIntegrationTests : IClassFixture<DatabaseFix
         var customerRating = "Bronze";
         var filterDate = new DateTime(2024, 05, 04);
 
-        var result = await _repository.GetAvailableSlotsAsync(language, products, customerRating, filterDate, CancellationToken.None);
+        var result = await _repository.GetAvailableSlotsAsync(language, products, customerRating, filterDate, TestHelpers.CreateCancellationToken());
 
         var availableSlots = result.ToList();
         Assert.Single(availableSlots);
         Assert.Contains(availableSlots, slot => slot.StartDate == new DateTime(2024, 05, 04, 10, 30, 00) && slot.AvailableCount == 1);
+    }
+
+    [Fact]
+    public async Task GetAvailableSlotsAsync_UnSupportedProducts_ReturnsEmptyList()
+    {
+        var language = "German";
+        var products = new[] { "UnSupportedProduct 1", "UnsupportedProduct2" };
+        var customerRating = "Bronze";
+        var filterDate = new DateTime(2024, 05, 04);
+
+        var result = await _repository.GetAvailableSlotsAsync(language, products, customerRating, filterDate, TestHelpers.CreateCancellationToken());
+
+        Assert.Empty(result);
     }
 }

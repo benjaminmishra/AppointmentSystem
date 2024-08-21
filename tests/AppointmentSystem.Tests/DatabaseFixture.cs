@@ -28,8 +28,8 @@ public class DatabaseFixture : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
-        // Start the PostgreSQL container
-        await _postgreSqlContainer.StartAsync();
+        // Start the PostgreSQL container, wait upto 1 min to launch the container
+        await _postgreSqlContainer.StartAsync(TestHelpers.CreateCancellationToken(60000));
         var connectionString = _postgreSqlContainer.GetConnectionString();
         var databaseOptions = new DatabaseOptions
         {
