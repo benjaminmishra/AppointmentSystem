@@ -14,7 +14,12 @@ builder.Services.Configure<JsonOptions>(o =>
 });
 builder.Services
     .AddFastEndpoints()
-    .SwaggerDocument();
+    .SwaggerDocument(o=>{
+        o.DocumentSettings = s => {
+            s.Title = "Appointment System Calendar Query API";
+            s.Version = "v1";
+        };
+    });
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(options => 

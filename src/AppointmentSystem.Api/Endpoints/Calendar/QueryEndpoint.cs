@@ -1,3 +1,4 @@
+using System.Globalization;
 using AppointmentSystem.Application.Queries;
 using AppointmentSystem.Domain.Errors;
 using AppointmentSystem.Domain.Models;
@@ -21,11 +22,14 @@ public class QueryEndpoint : Endpoint<QueryRequest, Results<Ok<List<AvailableSlo
     {
         Post("calendar/query");
         AllowAnonymous();
+        Summary(s=>{
+            s.Summary = "Returns all the avaiable slots based on the filter criteries passed in the post body";
+        });
     }
 
     public override async Task<Results<Ok<List<AvailableSlot>>, BadRequest<string>, ProblemHttpResult>> ExecuteAsync(
         QueryRequest request,
-        CancellationToken cancellationToken)
+        CancellationToken ct)
     {
         if (string.IsNullOrWhiteSpace(request.Language))
             return TypedResults.BadRequest("Language cannot be empty or whitespace");
@@ -35,10 +39,10 @@ public class QueryEndpoint : Endpoint<QueryRequest, Results<Ok<List<AvailableSlo
 
         if (string.IsNullOrWhiteSpace(request.Rating))
             return TypedResults.BadRequest("Rating cannot be empty or whitespace");
-        
+
         if (!DateOnly.TryParseExact(request.Date, InputDateFormat, out var day))
             return TypedResults.BadRequest($"Date can only be entered in {InputDateFormat}");
-        
+
         if (day == DateOnly.MinValue || day == DateOnly.MaxValue)
             return TypedResults.BadRequest("Date is invalid");
 
@@ -46,9 +50,9 @@ public class QueryEndpoint : Endpoint<QueryRequest, Results<Ok<List<AvailableSlo
             .HandleAsync(
                 request.Language,
                 request.Products,
-            request.Rating,
+                request.Rating,
                 day,
-                cancellationToken);
+                ct);
 
         if (result.Value is AvailableSlotsError error)
         {

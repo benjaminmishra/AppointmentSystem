@@ -1,0 +1,67 @@
+x-database-details: &DATABASE_DETAILS
+  Database__Host: enpal-coding-challenge-db
+  Database__Port: 5432
+  Database__Name: coding-challenge
+  Database__User: postgress
+  Database__Password: mypassword123!
+
+services:
+  appointmentsystem-api:
+    build:
+      context: .
+      dockerfile: ./AppointmentSystem.Api/Dockerfile
+      args: 
+        BUILD_CONFIGURATION: Debug
+    environment:
+      <<: *DATABASE_DETAILS
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:3000
+    networks:
+      - appointment-system-network
+    ports:
+      - "3000:5049"
+    depends_on:
+      - enpal-coding-challenge-db
+    develop:
+      watch:
+        - path: ./AppointmentSystem.Api/
+          action: rebuild
+    volumes:
+      - ~/.vsdbg:/remote_debugger:rw
+  
+  appointmentsystem-migrations:
+    build:
+      context: .
+      dockerfile: ./AppointmentSystem.MigrationRunner/Dockerfile
+      args: 
+        BUILD_CONFIGURATION: Debug
+    environment:
+      <<: *DATABASE_DETAILS
+    networks:
+      - appointment-system-network
+    depends_on:
+      - enpal-coding-challenge-db
+    restart: on-failure
+    develop:
+      watch:
+        - path: ./AppointmentSystem.MigrationRunner/
+          action: rebuild
+    volumes:
+      - ~/.vsdbg:/remote_debugger:rw
+      
+      
+  enpal-coding-challenge-db:
+    image: postgres:16  
+    environment:
+      POSTGRES_USER: postgress
+      POSTGRES_PASSWORD: mypassword123!
+    ports:
+      - "5433:5432"
+    networks:
+      - appointment-system-network
+    restart: always
+        
+        
+networks:
+  appointment-system-network:
+    driver: bridge
