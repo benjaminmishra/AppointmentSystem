@@ -1,10 +1,4 @@
-The goal of this document is to highlight some features of this solution. If you are intrested only in how to run this project then in short we just need to find the docker-compose.yml file and run docker compose up command in the same directory as the file. For a more step by step expalning go to the 'How to run the project?' section.
-
-## Pre-requisites
-- .NET 8
-- Docker
-- IDE such as VsCode, Visual Studio, Rider 
-
+The goal of this document is to highlight some features of this solution. If you are intrested only in how to run this project then in short we just need to find the docker-compose.yml file and run docker compose up command in the same directory as the file. For a more step by step explanation look the next section.
 
 ## How to run the project?
 The only way to run it at the moment it through docker compose. There are couple of docker compose files included in the src folder.
@@ -52,3 +46,11 @@ To initalize and load the data in the database and the test database we use the 
 
 ## [Requests Folder](./requests/)
 This folder contains a .http file called [AppointmentSystemApi](./requests/AppointmentSystemApi.http). This file esentially contains all the tests cases found in the index.js file in an http request format. This was mainly used to manually tests the api during developement.
+
+
+## Tech Used
+- .NET 8
+- Docker
+- IDE such as VsCode, Visual Studio, Rider
+- TestContainers
+
