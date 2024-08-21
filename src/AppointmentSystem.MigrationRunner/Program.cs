@@ -1,4 +1,4 @@
-﻿using AppointmentSystem.Migrations;
+﻿using AppointmentSystem.Migration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using AppointmentSystem.MigrationRunner;

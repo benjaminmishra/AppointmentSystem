@@ -1,5 +1,5 @@
 using AppointmentSystem.Infrastructure;
-using AppointmentSystem.Migrations;
+using AppointmentSystem.Migration;
 using Microsoft.Extensions.Options;
 using Testcontainers.PostgreSql;
 

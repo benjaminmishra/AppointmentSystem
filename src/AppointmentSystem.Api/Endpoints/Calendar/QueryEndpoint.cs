@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace AppointmentSystem.Api.Endpoints.Calendar;
 
-public class QueryEndpoint : Endpoint<QueryRequest, Results<Ok<List<AvailableSlot>>, NotFound, BadRequest<string>, ProblemHttpResult>>
+public class QueryEndpoint : Endpoint<QueryRequest, Results<Ok<List<AvailableSlot>>, BadRequest<string>, ProblemHttpResult>>
 {
     private const string InputDateFormat = "yyyy-MM-dd";
 
@@ -23,7 +23,7 @@ public class QueryEndpoint : Endpoint<QueryRequest, Results<Ok<List<AvailableSlo
         AllowAnonymous();
     }
 
-    public override async Task<Results<Ok<List<AvailableSlot>>, NotFound, BadRequest<string>, ProblemHttpResult>> ExecuteAsync(
+    public override async Task<Results<Ok<List<AvailableSlot>>, BadRequest<string>, ProblemHttpResult>> ExecuteAsync(
         QueryRequest request,
         CancellationToken cancellationToken)
     {

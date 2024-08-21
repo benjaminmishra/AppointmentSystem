@@ -1,7 +1,7 @@
 ﻿using DbUp;
 using System.Reflection;
 
-namespace AppointmentSystem.Migrations;
+namespace AppointmentSystem.Migration;
 
 public static class DatabaseMigrator
 {
