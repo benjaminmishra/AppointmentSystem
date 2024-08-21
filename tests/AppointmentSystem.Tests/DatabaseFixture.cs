@@ -14,7 +14,7 @@ public class DatabaseFixture : IAsyncLifetime
     
     private readonly PostgreSqlContainer _postgreSqlContainer;
     
-    public IDbConnectionFactory DbConnectionFactory { get; set; }
+    public IDbConnectionFactory? DbConnectionFactory { get; set; }
 
     public DatabaseFixture()
     {

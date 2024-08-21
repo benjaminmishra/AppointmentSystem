@@ -3,12 +3,15 @@ using AppointmentSystem.Infrastructure.DataAccess;
 namespace AppointmentSystem.Tests;
 
 [Trait("Type", "Integration")]
-public class CalendarQueryRepositoryTests : IClassFixture<DatabaseFixture>
+public class CalendarQueryRepositoryIntegrationTests : IClassFixture<DatabaseFixture>
 {
     private readonly CalendarQueryRepository _repository;
 
-    public CalendarQueryRepositoryTests(DatabaseFixture fixture)
+    public CalendarQueryRepositoryIntegrationTests(DatabaseFixture fixture)
     {
+        if(fixture.DbConnectionFactory is null)
+            throw new InvalidOperationException("DbConnectionFactory is null, failed to initalize test");
+
         _repository = new CalendarQueryRepository(fixture.DbConnectionFactory);
     }
 

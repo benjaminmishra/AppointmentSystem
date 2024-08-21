@@ -9,7 +9,7 @@ public interface IGetAvailableSlotsQueryHandler
     Task<OneOf<List<AvailableSlot>, AvailableSlotsError>> HandleAsync(
         string language,
         string[] products,
-        string ratings,
+        string rating,
         DateOnly date,
         CancellationToken cancellationToken);
 }
