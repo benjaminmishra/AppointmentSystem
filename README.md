@@ -1,4 +1,4 @@
-The goal of this document is to highlight some features of this solution. If you are intrested only in how to run this project then in short we just need to find the docker-compose.yml file and run docker compose up command in the same directory as the file. For a more step by step explanation look the next section.
+The goal of this document is to highlight some features of this solution. If you are intrested only in how to run this project then in short we just need to find the docker-compose.yml file and run docker compose up command in the same directory as the file. For a more step by step explanation look at the next section.
 
 ## How to run the project?
 The only way to run it at the moment it through docker compose. There are couple of docker compose files included in the src folder.
@@ -22,17 +22,17 @@ docker compose -f src/docker-compose.debug.yml up
   `http://localhost:3000/swagger`
 
 
-> Note that we need to have docker running before running these commands. Other than that no addtional steps necessery. The docker compose contains all the necessery services to run the app , the database and to populate the database.
+> Note that we need to have docker running before running these commands. Other than that no addtional steps necessery. The docker compose contains all the necessery services to run the app , the database and to populate the data.
 
 ## Tests
 All tests can be found in the tests folder and are grouped under one test project called [AppointmentSystems.Tests.csproj](./tests/AppointmentSystem.Tests/AppointmentSystem.Tests.csproj). You don't need to have the docker compose up and running to run the tests. Tests (integration tests) manage their own container creation using a package called [TestContainers](https://testcontainers.com/).
 
 There are two types of tests.
 
-- Unit tests - These only check individual classes of the application. You can run them via the follwoing command in the [project root directory](./).For these tests you don't need docker up and running.
+- Unit tests - These only check individual classes of the application. You can run them via the following command in the [project root directory](./).For these tests you don't need docker up and running.
   `dotnet test AppointmentSystem.sln --filter "Type=Unit" `
 
-- Integration Tests - These tests check the logic of fetching data the database. To run them you need docker up and running. And use can use the following command in the project [root directory](./)
+- Integration Tests - These tests check the logic of fetching data from the database. To run them you need docker up and running and can use the following command in the project [root directory](./)
   ` dotnet test AppointmentSystem.sln --filter "Type=Integration"`
 
 > Note : Tests use the same migration scripts as the application database to create and pouplate the data and all other necessery resources in the database. More on that below.
